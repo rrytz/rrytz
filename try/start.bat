@@ -1,0 +1,3 @@
+@echo off
+echo Starting your Next.js Portfolio...
+cmd /k "npm run dev"
