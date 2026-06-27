@@ -20,6 +20,7 @@ export const portfolioData = {
     database: ["PostgreSQL", "MySQL", "Supabase"],
     tools: ["Git", "GitHub", "Vite", "npm", "Docker"],
     design: ["Figma", "Adobe XD"],
+    testing: ["Jest", "Vitest", "Postman"],
   },
   projects: [
     {

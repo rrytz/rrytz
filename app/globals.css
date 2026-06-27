@@ -8,24 +8,32 @@
 }
 
 :root {
-  --background: #080808;
-  --foreground: #F0F0F0;
+  /* New color system */
+  --color-bg: #050d1a;
+  --color-surface: #0d1f2d;
+  --color-accent: #3fffa8;
+  --color-accent-2: #00c2ff;
+  --color-text: #e8f0f5;
+  --color-muted: #5a7a8a;
+  
+  --background: #050d1a;
+  --foreground: #e8f0f5;
   
   --glass-1: rgba(255, 255, 255, 0.03);
   --glass-2: rgba(255, 255, 255, 0.06);
   --glass-border: rgba(255, 255, 255, 0.08);
   --glass-border-bright: rgba(255, 255, 255, 0.16);
   
-  --accent: #7DF9C2;
-  --accent2: #A78BFA;
-  --accent3: #60A5FA;
+  --accent: #3fffa8;
+  --accent2: #00c2ff;
+  --accent3: #A78BFA;
   
-  --text-primary: #F0F0F0;
-  --text-muted: rgba(240, 240, 240, 0.45);
-  --text-dim: rgba(240, 240, 240, 0.25);
+  --text-primary: #e8f0f5;
+  --text-muted: #5a7a8a;
+  --text-dim: rgba(232, 240, 245, 0.25);
   
-  --glow: rgba(125, 249, 194, 0.12);
-  --glow2: rgba(167, 139, 250, 0.10);
+  --glow: rgba(63, 255, 168, 0.12);
+  --glow2: rgba(0, 194, 255, 0.10);
   
   --shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
 }
@@ -42,6 +50,35 @@ body {
   overflow-x: hidden;
 }
 
+/* Radial glow background */
+body::before {
+  content: '';
+  position: fixed;
+  top: -50%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(ellipse at center top, rgba(63, 255, 168, 0.08) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 /* Glassmorphism Helper */
 .glass {
   background: var(--glass-1);
@@ -54,7 +91,7 @@ body {
 
 .glass:hover {
   border-color: rgba(255, 255, 255, 0.14);
-  box-shadow: var(--shadow), inset 0 1px 0 var(--glass-border-bright), 0 0 0 1px rgba(125, 249, 194, 0.06);
+  box-shadow: var(--shadow), inset 0 1px 0 var(--glass-border-bright), 0 0 0 1px rgba(63, 255, 168, 0.06);
 }
 
 /* Animation utilities matching the design */
@@ -74,4 +111,65 @@ body {
 
 .animate-pulse-dot {
   animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes border-glow {
+  0%, 100% { box-shadow: 0 0 5px rgba(63, 255, 168, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(63, 255, 168, 0.6); }
+}
+
+.animate-border-glow {
+  animation: border-glow 2s ease-in-out infinite;
+}
+
+@keyframes micro-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+.animate-micro-bounce {
+  animation: micro-bounce 0.3s ease-in-out;
+}
+
+/* Scroll-triggered fade-in */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.scroll-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Eyebrow label system */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-accent);
+  margin-bottom: 1rem;
+}
+
+.eyebrow::before {
+  content: '';
+  width: 1.5rem;
+  height: 1px;
+  background: rgba(63, 255, 168, 0.6);
 }

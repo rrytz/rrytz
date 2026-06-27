@@ -12,7 +12,34 @@ export default function Stack() {
     { label: "Database", icon: "M21 5c0 1.66-4 3-9 3s-9-1.34-9-3 M21 12c0 1.66-4 3-9 3s-9-1.34-9-3 M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5", items: skills.database },
     { label: "Tools & Workflow", icon: "M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z", items: skills.tools },
     { label: "Design & Prototyping", icon: "M12 20h9 M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z", items: skills.design },
+    { label: "Testing / QA", icon: "M9 12l2 2 4-4 M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z", items: skills.testing || ["Jest", "Vitest", "Postman"] },
   ];
+
+  const getTechIcon = (tech: string) => {
+    const icons: { [key: string]: string } = {
+      "React": "⚛️",
+      "Tailwind CSS": "🎨",
+      "HTML": "🌐",
+      "Bootstrap": "🅱️",
+      "JavaScript": "📜",
+      "Python (FastAPI)": "🐍",
+      "Java": "☕",
+      "PostgreSQL": "🐘",
+      "MySQL": "🗄️",
+      "Supabase": "⚡",
+      "Git": "📦",
+      "GitHub": "🐙",
+      "Vite": "⚡",
+      "npm": "📦",
+      "Docker": "🐳",
+      "Figma": "🎨",
+      "Adobe XD": "🖌️",
+      "Jest": "🧪",
+      "Vitest": "🧪",
+      "Postman": "📬",
+    };
+    return icons[tech] || "•";
+  };
 
   return (
     <section id="stack" className="py-24">
@@ -23,8 +50,7 @@ export default function Stack() {
            viewport={{ once: true }}
            className="mb-14"
         >
-          <div className="flex items-center gap-3 text-[#7DF9C2] text-[0.75rem] font-semibold uppercase tracking-[0.12em] mb-4">
-            <span className="w-6 h-px bg-[#7DF9C2]/60" />
+          <div className="eyebrow">
             Toolkit
           </div>
           <h2 className="font-syne font-extrabold text-[clamp(1.8rem,4vw,2.8rem)] leading-[1.1] tracking-tight text-white mb-4">
@@ -55,8 +81,10 @@ export default function Stack() {
                 {group.items.map((item) => (
                   <span
                     key={item}
-                    className="px-3.5 py-1.5 bg-white/5 border border-white/10 rounded-md text-[0.8rem] font-medium text-white/80 hover:border-[#7DF9C2]/30 hover:text-[#7DF9C2] hover:bg-[#7DF9C2]/5 transition-all duration-200"
+                    className="px-3.5 py-1.5 bg-white/5 border border-white/10 rounded-md text-[0.8rem] font-medium text-white/80 hover:border-[#3fffa8]/30 hover:text-[#3fffa8] hover:bg-[#3fffa8]/5 transition-all duration-200 cursor-default group relative"
+                    title={item}
                   >
+                    <span className="mr-1.5">{getTechIcon(item)}</span>
                     {item}
                   </span>
                 ))}

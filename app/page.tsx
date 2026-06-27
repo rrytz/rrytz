@@ -10,7 +10,7 @@ import Blobs from "@/components/Blobs";
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen bg-[#080808] selection:bg-[#7DF9C2] selection:text-[#080808]">
+    <main className="relative min-h-screen bg-[#050d1a] selection:bg-[#3fffa8] selection:text-[#050d1a]">
       {/* Background Layers */}
       <NetworkCanvas />
       <Blobs />
