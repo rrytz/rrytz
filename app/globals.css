@@ -77,6 +77,25 @@ body::before {
   html {
     scroll-behavior: auto;
   }
+
+  .animate-navbar,
+  .animate-badge,
+  .animate-name-first,
+  .animate-name-last,
+  .animate-subtitle,
+  .animate-buttons,
+  .animate-profile-card,
+  .scroll-reveal-section {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .badge-dot,
+  body::before {
+    animation: none !important;
+  }
 }
 
 /* Glassmorphism Helper */
@@ -173,3 +192,244 @@ body::before {
   height: 1px;
   background: rgba(63, 255, 168, 0.6);
 }
+
+/* Page Load Staggered Entrance Animations */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-navbar {
+  animation: fadeInDown 0.6s ease-out forwards;
+  animation-delay: 0ms;
+  opacity: 0;
+}
+
+.animate-badge {
+  animation: fadeInUp 0.6s ease-out forwards;
+  animation-delay: 150ms;
+  opacity: 0;
+}
+
+.animate-name-first {
+  animation: fadeInUp 0.6s ease-out forwards;
+  animation-delay: 300ms;
+  opacity: 0;
+}
+
+.animate-name-last {
+  animation: fadeInUp 0.6s ease-out forwards;
+  animation-delay: 450ms;
+  opacity: 0;
+}
+
+.animate-subtitle {
+  animation: fadeInUp 0.6s ease-out forwards;
+  animation-delay: 600ms;
+  opacity: 0;
+}
+
+.animate-buttons {
+  animation: fadeInUp 0.6s ease-out forwards;
+  animation-delay: 750ms;
+  opacity: 0;
+}
+
+.animate-profile-card {
+  animation: fadeInRight 0.6s ease-out forwards;
+  animation-delay: 500ms;
+  opacity: 0;
+}
+
+/* Scroll Progress Indicator */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-accent), var(--color-accent-2));
+  box-shadow: 0 0 10px rgba(63, 255, 168, 0.5);
+  z-index: 9999;
+  transition: width 0.1s ease-out;
+}
+
+/* Nav Link Hover Underline */
+.nav-link {
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s ease-out;
+}
+
+.nav-link:hover::after {
+  transform: scaleX(1);
+}
+
+/* Button Border Pulse Animation */
+@keyframes borderPulse {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(63, 255, 168, 0.3), 0 0 0 1px rgba(63, 255, 168, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(63, 255, 168, 0.6), 0 0 0 1px rgba(63, 255, 168, 0.3);
+  }
+}
+
+.button-border-pulse:hover {
+  animation: borderPulse 0.6s ease-in-out 2;
+}
+
+/* Profile Card Hover Lift */
+.profile-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 40px rgba(63, 255, 168, 0.3), 0 8px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* Project Card Hover Effects */
+.project-card {
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+}
+
+.project-card .view-project-label {
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.project-card:hover .view-project-label {
+  transform: translateY(0);
+}
+
+/* Contact Row Hover Effects */
+.contact-row {
+  transition: border-color 0.3s ease;
+}
+
+.contact-row:hover {
+  border-color: rgba(63, 255, 168, 0.3);
+}
+
+.contact-row .contact-icon {
+  transition: transform 0.3s ease;
+}
+
+.contact-row:hover .contact-icon {
+  animation: bounceY 0.3s ease;
+}
+
+@keyframes bounceY {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+/* Tech Tag Hover */
+.tech-tag {
+  transition: background-color 0.2s ease, transform 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.tech-tag:hover {
+  background-color: rgba(63, 255, 168, 0.1);
+  transform: scale(1.05);
+  border-color: rgba(63, 255, 168, 0.3);
+  color: var(--color-accent);
+}
+
+/* Ambient Background Breathing */
+@keyframes backgroundBreath {
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+body::before {
+  animation: backgroundBreath 20s ease-in-out infinite;
+}
+
+/* Badge Dot Pulse */
+@keyframes badgePulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 0.4;
+  }
+}
+
+.badge-dot {
+  animation: badgePulse 2s ease-in-out infinite;
+}
+
+/* Scroll Reveal Animation */
+.scroll-reveal-section {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.scroll-reveal-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered delays for cards */
+.stagger-card-1 { transition-delay: 0ms; }
+.stagger-card-2 { transition-delay: 100ms; }
+.stagger-card-3 { transition-delay: 200ms; }
+.stagger-card-4 { transition-delay: 300ms; }
+.stagger-card-5 { transition-delay: 400ms; }
+.stagger-card-6 { transition-delay: 500ms; }

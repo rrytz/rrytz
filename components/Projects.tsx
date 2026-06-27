@@ -1,20 +1,34 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
 import { portfolioData } from "@/data/portfolio";
 
 export default function Projects() {
   const { projects } = portfolioData;
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    const revealElements = sectionRef.current?.querySelectorAll('.scroll-reveal-section');
+    revealElements?.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <section id="projects" className="py-24">
+    <section id="projects" className="py-24" ref={sectionRef}>
       <div className="max-w-7xl mx-auto px-6">
-        <motion.div
-           initial={{ opacity: 0, y: 30 }}
-           whileInView={{ opacity: 1, y: 0 }}
-           viewport={{ once: true }}
-           className="mb-14"
-        >
+        <div className="mb-14 scroll-reveal-section">
           <div className="eyebrow">
             Work
           </div>
@@ -24,17 +38,13 @@ export default function Projects() {
           <p className="text-white/45 text-base leading-[1.7] max-w-[540px]">
             A selection of frontend interfaces I've designed and developed — each focused on clarity, usability, and visual polish.
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
           {projects.map((project, idx) => (
-            <motion.div
+            <div
               key={project.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
-              className="glass p-8 flex flex-col relative group overflow-hidden rounded-[20px] transition-all duration-300 hover:-translate-y-1 hover:border-[#3fffa8]/30 hover:shadow-[0_0_30px_rgba(63,255,168,0.1)]"
+              className={`glass p-8 flex flex-col relative group overflow-hidden rounded-[20px] project-card scroll-reveal-section stagger-card-${idx + 1}`}
             >
               <div className="absolute inset-0 bg-gradient-to-br from-[#3fffa8]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
               <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#3fffa8] to-[#00c2ff] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -57,7 +67,7 @@ export default function Projects() {
                     ? 'bg-[#3fffa8]/10 text-[#3fffa8] border-[#3fffa8]/20' 
                     : 'bg-amber-400/10 text-amber-400 border-amber-400/20'
                 }`}>
-                  <span className={`w-1.5 h-1.5 rounded-full ${project.status === 'Completed' ? 'bg-[#3fffa8] animate-pulse-dot' : 'bg-amber-400 animate-pulse-dot'}`} />
+                  <span className={`w-1.5 h-1.5 rounded-full ${project.status === 'Completed' ? 'bg-[#3fffa8] badge-dot' : 'bg-amber-400 badge-dot'}`} />
                   {project.status === 'Completed' ? '• Live' : project.status}
                 </span>
 
@@ -72,10 +82,10 @@ export default function Projects() {
                 )}
               </div>
 
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#3fffa8]/10 to-transparent translate-y-full group-hover:translate-y-0 transition-transform duration-300 p-4 flex items-center justify-center">
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#3fffa8]/10 to-transparent view-project-label p-4 flex items-center justify-center">
                 <span className="text-[0.8rem] font-semibold text-[#3fffa8]">View Project →</span>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

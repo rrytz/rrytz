@@ -1,11 +1,30 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
 import { portfolioData } from "@/data/portfolio";
 
 export default function Contact() {
   const { email, location } = portfolioData.personal;
   const { linkedin } = portfolioData.social;
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    const revealElements = sectionRef.current?.querySelectorAll('.scroll-reveal-section');
+    revealElements?.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
 
   const contactItems = [
     { label: "Email", value: email, icon: "✉", href: `mailto:${email}`, colorClass: "bg-[#3fffa8]/10 text-[#3fffa8]" },
@@ -13,14 +32,9 @@ export default function Contact() {
   ];
 
   return (
-    <section id="contact" className="py-24">
+    <section id="contact" className="py-24" ref={sectionRef}>
       <div className="max-w-7xl mx-auto px-6">
-        <motion.div
-           initial={{ opacity: 0, scale: 0.98 }}
-           whileInView={{ opacity: 1, scale: 1 }}
-           viewport={{ once: true }}
-           className="glass p-14 grid md:grid-cols-2 gap-16 items-center rounded-[20px]"
-        >
+        <div className="glass p-14 grid md:grid-cols-2 gap-16 items-center rounded-[20px] scroll-reveal-section">
           <div>
             <div className="eyebrow">
               Contact
@@ -38,16 +52,12 @@ export default function Contact() {
 
           <div className="flex flex-col gap-4">
             {contactItems.map((item, idx) => (
-              <motion.a
+              <a
                 key={item.label}
                 href={item.href}
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className="flex items-center gap-5 p-5 bg-white/5 border border-white/10 rounded-[14px] hover:border-[#3fffa8]/30 hover:bg-[#3fffa8]/5 transition-all duration-300 group"
+                className="contact-row flex items-center gap-5 p-5 bg-white/5 border border-white/10 rounded-[14px] hover:border-[#3fffa8]/30 hover:bg-[#3fffa8]/5 transition-all duration-300 group"
               >
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm ${item.colorClass} group-hover:scale-110 group-hover:animate-micro-bounce transition-transform shadow-[0_0_15px_rgba(63,255,168,0.2)]`}>
+                <div className={`contact-icon w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm ${item.colorClass} shadow-[0_0_15px_rgba(63,255,168,0.2)]`}>
                   {item.icon}
                 </div>
                 <div className="flex-1">
@@ -57,10 +67,10 @@ export default function Contact() {
                 <div className="text-white/20 group-hover:text-[#3fffa8] transition-colors">
                   →
                 </div>
-              </motion.a>
+              </a>
             ))}
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

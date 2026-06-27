@@ -1,10 +1,29 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
 import { portfolioData } from "@/data/portfolio";
 
 export default function Stack() {
   const { skills } = portfolioData;
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    const revealElements = sectionRef.current?.querySelectorAll('.scroll-reveal-section');
+    revealElements?.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
 
   const stackGroups = [
     { label: "Client Side", icon: "M2 3h20v14H2z M8 21h8M12 17v4", items: skills.clientSide },
@@ -42,14 +61,9 @@ export default function Stack() {
   };
 
   return (
-    <section id="stack" className="py-24">
+    <section id="stack" className="py-24" ref={sectionRef}>
       <div className="max-w-7xl mx-auto px-6">
-        <motion.div
-           initial={{ opacity: 0, y: 30 }}
-           whileInView={{ opacity: 1, y: 0 }}
-           viewport={{ once: true }}
-           className="mb-14"
-        >
+        <div className="mb-14 scroll-reveal-section">
           <div className="eyebrow">
             Toolkit
           </div>
@@ -59,17 +73,13 @@ export default function Stack() {
           <p className="text-white/45 text-base leading-[1.7] max-w-[540px]">
             The tools and technologies I use to design, build, and ship interfaces.
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {stackGroups.map((group, idx) => (
-            <motion.div
+            <div
               key={group.label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
-              className="glass p-8 rounded-[20px]"
+              className={`glass p-8 rounded-[20px] scroll-reveal-section stagger-card-${idx + 1}`}
             >
               <div className="flex items-center gap-2.5 text-[0.72rem] font-bold text-[#A78BFA] uppercase tracking-[0.1em] mb-6">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -81,7 +91,7 @@ export default function Stack() {
                 {group.items.map((item) => (
                   <span
                     key={item}
-                    className="px-3.5 py-1.5 bg-white/5 border border-white/10 rounded-md text-[0.8rem] font-medium text-white/80 hover:border-[#3fffa8]/30 hover:text-[#3fffa8] hover:bg-[#3fffa8]/5 transition-all duration-200 cursor-default group relative"
+                    className="tech-tag px-3.5 py-1.5 bg-white/5 border border-white/10 rounded-md text-[0.8rem] font-medium text-white/80 cursor-default"
                     title={item}
                   >
                     <span className="mr-1.5">{getTechIcon(item)}</span>
@@ -89,7 +99,7 @@ export default function Stack() {
                   </span>
                 ))}
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

@@ -7,10 +7,12 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import NetworkCanvas from "@/components/NetworkCanvas";
 import Blobs from "@/components/Blobs";
+import ScrollProgress from "@/components/ScrollProgress";
 
 export default function Home() {
   return (
     <main className="relative min-h-screen bg-[#050d1a] selection:bg-[#3fffa8] selection:text-[#050d1a]">
+      <ScrollProgress />
       {/* Background Layers */}
       <NetworkCanvas />
       <Blobs />
