@@ -435,60 +435,6 @@ body::before {
 .stagger-card-6 { transition-delay: 500ms; }
 
 /* Evidence Panel Styles */
-.evidence-panel {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease-out, padding 0.3s ease-out;
-  background: var(--color-surface);
-  border-left: 3px solid var(--color-accent);
-  margin-top: 0;
-  padding: 0;
-}
-
-.evidence-panel.open {
-  max-height: 2000px;
-  margin-top: 1rem;
-  padding: 1.25rem;
-}
-
-.evidence-toggle {
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
-  background: rgba(63, 255, 168, 0.1);
-  border: 1px solid rgba(63, 255, 168, 0.3);
-  border-radius: 8px;
-  color: var(--color-accent);
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.evidence-toggle:hover {
-  background: rgba(63, 255, 168, 0.2);
-  border-color: rgba(63, 255, 168, 0.5);
-}
-
-.evidence-toggle svg {
-  transition: transform 0.3s ease;
-}
-
-.evidence-toggle.open svg {
-  transform: rotate(180deg);
-}
-
-.evidence-header {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--color-accent);
-  margin-bottom: 1rem;
-}
-
 .evidence-content {
   display: flex;
   flex-direction: column;
