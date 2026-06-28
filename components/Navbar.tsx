@@ -13,9 +13,10 @@ export default function Navbar() {
   }, []);
 
   const navLinks = [
-    { name: "Philosophy", href: "#philosophy" },
-    { name: "Projects", href: "#projects" },
-    { name: "Stack", href: "#stack" },
+    { name: "How I think", href: "#philosophy" },
+    { name: "Work", href: "#projects" },
+    { name: "Journey", href: "#journey" },
+    { name: "Approach", href: "#stack" },
     { name: "Contact", href: "#contact" },
   ];
 

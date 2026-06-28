@@ -4,11 +4,16 @@ import { useEffect, useRef, useState } from "react";
 import { portfolioData } from "@/data/portfolio";
 
 export default function Stack() {
-  const { skills } = portfolioData;
+  const { skills, proficiency, stackApproach } = portfolioData;
   const sectionRef = useRef<HTMLElement>(null);
   const [count, setCount] = useState(0);
   const [inputText, setInputText] = useState("");
   const [stats, setStats] = useState({ reversed: "-", words: 0, chars: 0 });
+  const [openPanels, setOpenPanels] = useState<Record<string, boolean>>({});
+
+  const togglePanel = (label: string) => {
+    setOpenPanels(prev => ({ ...prev, [label]: !prev[label] }));
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -89,7 +94,7 @@ export default function Stack() {
             </div>
             <div className="code-block">
               <pre><code><span className="syntax-comment">// This portfolio uses Tailwind CSS</span>
-<span className="syntax-tag">&lt;div</span> <span className="syntax-attr">className</span>=<span className="syntax-string">"glass p-8 rounded-[20px]"</span><span className="syntax-tag">&gt;</span></code></pre>
+<span className="syntax-tag">&lt;div</span> <span className="syntax-attr">className</span>=<span className="syntax-string">&quot;glass p-8 rounded-[20px]&quot;</span><span className="syntax-tag">&gt;</span></code></pre>
             </div>
           </div>
         );
@@ -123,7 +128,7 @@ export default function Stack() {
             </div>
             <div className="code-block">
               <pre><code><span className="syntax-comment">// Used in Simple Banking System</span>
-<span className="syntax-keyword">@app</span>.<span className="syntax-function">get</span>(<span className="syntax-string">"/users/&#123;user_id&#125;"</span>)
+<span className="syntax-keyword">@app</span>.<span className="syntax-function">get</span>(<span className="syntax-string">&quot;/users/&#123;user_id&#125;&quot;</span>)
 <span className="syntax-keyword">async def</span> <span className="syntax-function">get_user</span>(user_id: <span className="syntax-type">int</span>):
     <span className="syntax-keyword">return</span> db.<span className="syntax-function">query</span>(<span className="syntax-type">User</span>).<span className="syntax-function">filter</span>(<span className="syntax-type">User</span>.id == user_id).<span className="syntax-function">first</span>()</code></pre>
             </div>
@@ -134,7 +139,7 @@ export default function Stack() {
           <div className="mt-6 space-y-4">
             <div className="code-block">
               <pre><code><span className="syntax-comment">// This portfolio uses Next.js with PostgreSQL</span>
-<span className="syntax-keyword">SELECT</span> * <span className="syntax-keyword">FROM</span> projects <span className="syntax-keyword">WHERE</span> status = <span className="syntax-string">'live'</span></code></pre>
+<span className="syntax-keyword">SELECT</span> * <span className="syntax-keyword">FROM</span> projects <span className="syntax-keyword">WHERE</span> status = <span className="syntax-string">&apos;live&apos;</span></code></pre>
             </div>
             <div className="code-block">
               <pre><code><span className="syntax-comment">// Simple Grading System</span>
@@ -151,7 +156,7 @@ export default function Stack() {
             <div className="code-block">
               <pre><code><span className="syntax-comment"># This project is version controlled with Git</span>
 git add .
-git commit -m <span className="syntax-string">"add feature"</span>
+git commit -m <span className="syntax-string">&quot;add feature&quot;</span>
 git push</code></pre>
             </div>
             <div className="live-demo">
@@ -188,7 +193,7 @@ git push</code></pre>
           <div className="mt-6 space-y-4">
             <div className="code-block">
               <pre><code><span className="syntax-comment">// Jest test example</span>
-<span className="syntax-function">test</span>(<span className="syntax-string">'renders correctly'</span>, () =&gt; &#123;
+<span className="syntax-function">test</span>(<span className="syntax-string">&apos;renders correctly&apos;</span>, () =&gt; &#123;
   <span className="syntax-function">expect</span>(screen).<span className="syntax-function">toBeInTheDocument</span>();
 &#125;);</code></pre>
             </div>
@@ -204,43 +209,86 @@ git push</code></pre>
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-14 scroll-reveal-section">
           <div className="eyebrow">
-            Toolkit
+            Approach
           </div>
           <h2 className="font-syne font-extrabold text-[clamp(1.8rem,4vw,2.8rem)] leading-[1.1] tracking-tight text-white mb-4">
-            Tech Stack
+            How I build
           </h2>
-          <p className="text-white/45 text-base leading-[1.7] max-w-[540px]">
-            The tools and technologies I use to design, build, and ship interfaces.
+          <p className="text-white/45 text-base leading-[1.7] max-w-[560px] mb-6">
+            {stackApproach}
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {stackGroups.map((group, idx) => (
-            <div
-              key={group.label}
-              className={`glass p-8 rounded-[20px] scroll-reveal-section stagger-card-${idx + 1}`}
-            >
-              <div className="flex items-center gap-2.5 text-[0.72rem] font-bold text-[#A78BFA] uppercase tracking-[0.1em] mb-6">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d={group.icon} />
-                </svg>
-                {group.label}
+          {stackGroups.map((group, idx) => {
+            const isOpen = !!openPanels[group.label];
+            const evidence = getInlineEvidence(group.label);
+            return (
+              <div
+                key={group.label}
+                className={`glass p-8 rounded-[20px] flex flex-col justify-between scroll-reveal-section stagger-card-${idx + 1} ${idx < 3 ? 'stack-card-left' : 'stack-card-right'}`}
+              >
+                <div>
+                  <div className="flex items-center gap-2.5 text-[0.72rem] font-bold text-[#A78BFA] uppercase tracking-[0.1em] mb-6">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d={group.icon} />
+                    </svg>
+                    {group.label}
+                  </div>
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {group.items.map((item) => (
+                      <div key={item} className="group/tech relative">
+                        <span
+                          className="tech-tag px-3.5 py-1.5 bg-white/5 border border-white/10 rounded-md text-[0.8rem] font-medium text-white/80 cursor-default inline-block"
+                          title={item}
+                        >
+                          <span className="mr-1.5">{getTechIcon(item)}</span>
+                          {item}
+                        </span>
+                        {/* Proficiency tooltip */}
+                        {proficiency[item] && (
+                          <div className="proficiency-tooltip">
+                            {proficiency[item]}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {evidence && (
+                  <div className="mt-4 pt-4 border-t border-white/10">
+                    <button
+                      onClick={() => togglePanel(group.label)}
+                      className="flex items-center justify-between w-full text-left text-[0.78rem] font-bold text-[#3fffa8] uppercase tracking-[0.08em] hover:opacity-80 transition-opacity py-1"
+                    >
+                      <span>{isOpen ? 'Hide Evidence' : 'Show Evidence'}</span>
+                      <svg 
+                        className={`chevron-icon w-4 h-4 ${isOpen ? 'open' : ''}`} 
+                        viewBox="0 0 24 24" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        strokeWidth="2" 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round"
+                      >
+                        <path d="M6 9l6 6 6-6" />
+                      </svg>
+                    </button>
+
+                    <div className={`evidence-wrapper ${isOpen ? 'open' : ''}`}>
+                      <div className="evidence-inner pl-4 my-2">
+                        <div className="evidence-border" />
+                        <div className="evidence-content-fade">
+                          {evidence}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
-              <div className="flex flex-wrap gap-2">
-                {group.items.map((item) => (
-                  <span
-                    key={item}
-                    className="tech-tag px-3.5 py-1.5 bg-white/5 border border-white/10 rounded-md text-[0.8rem] font-medium text-white/80 cursor-default"
-                    title={item}
-                  >
-                    <span className="mr-1.5">{getTechIcon(item)}</span>
-                    {item}
-                  </span>
-                ))}
-              </div>
-              {getInlineEvidence(group.label)}
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
