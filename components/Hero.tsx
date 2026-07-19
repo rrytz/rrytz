@@ -2,6 +2,7 @@
 
 import { portfolioData } from "@/data/portfolio";
 import { useState, useEffect, useRef } from "react";
+import PixelTransition from "./PixelTransition";
 
 export default function Hero() {
   const { name, role, profileImage, positioning, bio } = portfolioData.personal;
@@ -171,17 +172,34 @@ export default function Hero() {
               {/* Ambient drift */}
               <div className="card-ambient-shimmer absolute inset-0 pointer-events-none" />
 
-              {/* Avatar */}
-              <div className="w-28 h-28 rounded-full bg-gradient-to-br from-[#A78BFA] to-[#60A5FA] mx-auto mb-5 flex items-center justify-center font-syne font-extrabold text-4xl text-white shadow-[0_0_40px_rgba(167,139,250,0.3)] relative overflow-hidden group">
-                {profileImage ? (
-                  <img
-                    src={profileImage}
-                    alt={name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                ) : (
-                  "RL"
-                )}
+              {/* Avatar with PixelTransition */}
+              <div className="w-28 h-28 rounded-full mx-auto mb-5 relative">
+                <PixelTransition
+                  firstContent={
+                    <div className="w-full h-full rounded-full bg-gradient-to-br from-[#A78BFA] to-[#60A5FA] flex items-center justify-center font-syne font-extrabold text-4xl text-white shadow-[0_0_40px_rgba(167,139,250,0.3)]">
+                      {profileImage ? (
+                        <img
+                          src={profileImage}
+                          alt={name}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        "RL"
+                      )}
+                    </div>
+                  }
+                  secondContent={
+                    <div className="w-full h-full rounded-full bg-gradient-to-br from-[#3fffa8] to-[#00c2ff] flex items-center justify-center font-syne font-extrabold text-4xl text-[#050d1a]">
+                      {role}
+                    </div>
+                  }
+                  gridSize={8}
+                  pixelColor="#3fffa8"
+                  animationStepDuration={0.4}
+                  once={false}
+                  className="rounded-full"
+                  style={{ width: '100%', height: '100%' }}
+                />
               </div>
 
               <h3 className="font-syne font-bold text-base text-white mb-1.5">{name}</h3>
