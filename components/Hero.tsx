@@ -2,7 +2,6 @@
 
 import { portfolioData } from "@/data/portfolio";
 import { useState, useEffect, useRef } from "react";
-import TextType from "./TextType";
 
 export default function Hero() {
   const { name, role, profileImage, positioning, bio } = portfolioData.personal;
@@ -105,17 +104,11 @@ export default function Hero() {
 
             {/* Name */}
             <h1 className="font-syne font-extrabold text-[clamp(2.5rem,7vw,5.5rem)] leading-none tracking-[-0.03em] text-white">
-              <TextType
-                text={["Ritz Lloyd Sastrillas"]}
-                typingSpeed={100}
-                initialDelay={500}
-                pauseDuration={3000}
-                loop={false}
-                showCursor={true}
-                cursorCharacter="|"
-                cursorBlinkDuration={0.7}
-                className="tracking-[-0.02em]"
-              />
+              <span className="animate-name-first inline-block tracking-[-0.02em]">Ritz Lloyd</span>
+              <br />
+              <span className="animate-name-last inline-block text-[#3fffa8] tracking-[-0.04em]">
+                Sastrillas
+              </span>
             </h1>
 
             {/* Positioning statement (replaces generic "Frontend Developer") */}
