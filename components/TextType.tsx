@@ -6,7 +6,7 @@ import './TextType.css';
 
 const TextType = ({
   text,
-  as: Component = 'div',
+  as: Component = 'span',
   typingSpeed = 50,
   initialDelay = 0,
   pauseDuration = 2000,
@@ -15,6 +15,7 @@ const TextType = ({
   className = '',
   showCursor = true,
   hideCursorWhileTyping = false,
+  hideCursorOnComplete = true,
   cursorCharacter = '|',
   cursorClassName = '',
   cursorBlinkDuration = 0.5,
@@ -30,8 +31,9 @@ const TextType = ({
   const [isDeleting, setIsDeleting] = useState(false);
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(!startOnVisible);
-  const cursorRef = useRef(null);
-  const containerRef = useRef(null);
+  const [isComplete, setIsComplete] = useState(false);
+  const cursorRef = useRef<HTMLSpanElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
 
   const textArray = useMemo(() => (Array.isArray(text) ? text : [text]), [text]);
 
@@ -65,22 +67,25 @@ const TextType = ({
   }, [startOnVisible]);
 
   useEffect(() => {
-    if (showCursor && cursorRef.current) {
+    if (showCursor && cursorRef.current && !isComplete) {
       gsap.set(cursorRef.current, { opacity: 1 });
-      gsap.to(cursorRef.current, {
+      const tween = gsap.to(cursorRef.current, {
         opacity: 0,
         duration: cursorBlinkDuration,
         repeat: -1,
         yoyo: true,
         ease: 'power2.inOut'
       });
+      return () => {
+        tween.kill();
+      };
     }
-  }, [showCursor, cursorBlinkDuration]);
+  }, [showCursor, cursorBlinkDuration, isComplete]);
 
   useEffect(() => {
     if (!isVisible) return;
 
-    let timeout;
+    let timeout: ReturnType<typeof setTimeout>;
     const currentText = textArray[currentTextIndex];
     const processedText = reverseMode ? currentText.split('').reverse().join('') : currentText;
 
@@ -89,6 +94,7 @@ const TextType = ({
         if (displayedText === '') {
           setIsDeleting(false);
           if (currentTextIndex === textArray.length - 1 && !loop) {
+            setIsComplete(true);
             return;
           }
 
@@ -114,7 +120,13 @@ const TextType = ({
             variableSpeed ? getRandomSpeed() : typingSpeed
           );
         } else if (textArray.length >= 1) {
-          if (!loop && currentTextIndex === textArray.length - 1) return;
+          if (onSentenceComplete) {
+            onSentenceComplete(textArray[currentTextIndex], currentTextIndex);
+          }
+          if (!loop && currentTextIndex === textArray.length - 1) {
+            setIsComplete(true);
+            return;
+          }
           timeout = setTimeout(() => {
             setIsDeleting(true);
           }, pauseDuration);
@@ -148,7 +160,8 @@ const TextType = ({
   ]);
 
   const shouldHideCursor =
-    hideCursorWhileTyping && (currentCharIndex < textArray[currentTextIndex].length || isDeleting);
+    (hideCursorWhileTyping && (currentCharIndex < textArray[currentTextIndex]?.length || isDeleting)) ||
+    (hideCursorOnComplete && isComplete);
 
   return createElement(
     Component,
@@ -160,10 +173,10 @@ const TextType = ({
     <span className="text-type__content" style={{ color: getCurrentTextColor() || 'inherit' }}>
       {displayedText}
     </span>,
-    showCursor && (
+    showCursor && !shouldHideCursor && (
       <span
         ref={cursorRef}
-        className={`text-type__cursor ${cursorClassName} ${shouldHideCursor ? 'text-type__cursor--hidden' : ''}`}
+        className={`text-type__cursor ${cursorClassName}`}
       >
         {cursorCharacter}
       </span>

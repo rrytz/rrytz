@@ -13,15 +13,16 @@ function PixelTransition({
   className = '',
   style = {}
 }: any) {
-  const containerRef = useRef(null);
-  const pixelGridRef = useRef(null);
-  const activeRef = useRef(null);
-  const delayedCallRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const pixelGridRef = useRef<HTMLDivElement>(null);
+  const activeRef = useRef<HTMLDivElement>(null);
+  const delayedCallRef = useRef<any>(null);
 
   const [isActive, setIsActive] = useState(false);
 
   const isTouchDevice =
-    'ontouchstart' in window || navigator.maxTouchPoints > 0 || window.matchMedia('(pointer: coarse)').matches;
+    typeof window !== 'undefined' &&
+    ('ontouchstart' in window || navigator.maxTouchPoints > 0 || window.matchMedia('(pointer: coarse)').matches);
 
   useEffect(() => {
     const pixelGridEl = pixelGridRef.current;

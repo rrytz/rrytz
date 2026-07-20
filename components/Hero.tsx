@@ -1,226 +1,189 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { portfolioData } from "@/data/portfolio";
-import { useState, useEffect, useRef } from "react";
+import PixelTransition from "./PixelTransition";
+import TextType from "./TextType";
+import {
+  GithubIcon,
+  LinkedinIcon,
+  MailIcon,
+  VerifiedBadgeIcon,
+  ReactIcon,
+  NextjsIcon,
+  TypescriptIcon,
+  TailwindIcon,
+  PostgresIcon
+} from "./Icons";
 
 export default function Hero() {
-  const { name, role, profileImage, positioning, bio } = portfolioData.personal;
-  const thinkingTopics = portfolioData.thinkingAbout;
-  const [projectsCount, setProjectsCount] = useState(0);
-  const [techCount, setTechCount] = useState(0);
-  const [counterDone, setCounterDone] = useState(false);
-  const [thinkingIndex, setThinkingIndex] = useState(0);
-  const profileCardRef = useRef<HTMLDivElement>(null);
-  const counterTriggered = useRef(false);
-
-  // Counter animation
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !counterTriggered.current) {
-            counterTriggered.current = true;
-            animateCounter(4, setProjectsCount);
-            animateCounter(5, setTechCount, () => setCounterDone(true));
-            observer.disconnect();
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
-    if (profileCardRef.current) observer.observe(profileCardRef.current);
-    return () => observer.disconnect();
-  }, []);
-
-  // "Currently thinking about" rotator — 4s cycle
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setThinkingIndex((prev) => (prev + 1) % thinkingTopics.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, [thinkingTopics.length]);
-
-  // Profile card tilt
-  useEffect(() => {
-    const card = profileCardRef.current;
-    if (!card) return;
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) return;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const cx = rect.width / 2;
-      const cy = rect.height / 2;
-      const rotX = ((y - cy) / cy) * -3;
-      const rotY = ((x - cx) / cx) * 3;
-      card.style.transition = "transform 100ms ease-out";
-      card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
-    };
-
-    const handleMouseLeave = () => {
-      card.style.transition = "transform 400ms cubic-bezier(0.22, 1, 0.36, 1)";
-      card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg)";
-    };
-
-    card.addEventListener("mousemove", handleMouseMove);
-    card.addEventListener("mouseleave", handleMouseLeave);
-    return () => {
-      card.removeEventListener("mousemove", handleMouseMove);
-      card.removeEventListener("mouseleave", handleMouseLeave);
-    };
-  }, []);
-
-  const animateCounter = (
-    target: number,
-    setter: (v: number) => void,
-    onComplete?: () => void
-  ) => {
-    const duration = 1200;
-    const start = performance.now();
-    const tick = (now: number) => {
-      const progress = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setter(Math.floor(target * eased));
-      if (progress < 1) requestAnimationFrame(tick);
-      else { setter(target); onComplete?.(); }
-    };
-    requestAnimationFrame(tick);
-  };
+  const { name, role, profileImage, positioning, bio, resumeUrl, email } = portfolioData.personal;
+  const { github, linkedin } = portfolioData.social;
 
   return (
-    <section id="home" className="min-h-screen flex items-center pt-20">
-      <div className="max-w-7xl mx-auto px-6 w-full py-16">
-        <div className="grid md:grid-cols-[1fr_auto] gap-16 items-center">
+    <section id="home" className="min-h-screen flex items-center pt-32 sm:pt-36 pb-16">
+      <div className="max-w-4xl mx-auto px-6 w-full">
+        {/* Profile Header Row — Avatar + Name + Verified Badge + Social Icons */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="flex items-center gap-6 mb-8"
+        >
+          {/* Avatar with PixelTransition hover effect */}
+          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-[#A78BFA] to-[#60A5FA] flex-shrink-0 flex items-center justify-center font-syne font-extrabold text-2xl text-white shadow-[0_0_30px_rgba(125,249,194,0.15)] relative group overflow-hidden border-2 border-white/10">
+            <PixelTransition
+              isVisible={true}
+              isHovered={false}
+              onClick={() => {}}
+              divRef={null}
+              contentContainerClassName="w-full h-full flex items-center justify-center"
+              pixelSize={8}
+              transitionDuration={0.4}
+              className="w-full h-full"
+              autoPlay={true}
+              playInterval={4000}
+              gridGap={2}
+              initialSpeed={0.8}
+              hoverSpeed={0.6}
+              pixelClassName="bg-gradient-to-br from-[#7DF9C2] to-[#60A5FA]"
+              firstContent={
+                <img src="/avatar_hover.png" alt={`${name} Avatar`} className="w-full h-full object-cover" />
+              }
+              secondContent={
+                profileImage ? (
+                  <img src={profileImage} alt={name} className="w-full h-full object-cover" />
+                ) : (
+                  <span className="text-white">RL</span>
+                )
+              }
+            />
+          </div>
 
-          {/* LEFT — text content */}
+          {/* Name & Verified Badge & Social Links */}
           <div>
-            {/* Badge */}
-            <div className="animate-badge inline-flex items-center gap-2 px-4 py-1.5 bg-[#3fffa8]/10 border border-[#3fffa8]/30 rounded-full text-[0.78rem] font-medium text-[#3fffa8] uppercase tracking-[0.06em] mb-6 shadow-[0_0_20px_rgba(63,255,168,0.15)]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#3fffa8] badge-dot shadow-[0_0_8px_rgba(63,255,168,0.8)]" />
-              Open to opportunities
-            </div>
-
-            {/* Name */}
-            <h1 className="font-syne font-extrabold text-[clamp(2.5rem,7vw,5.5rem)] leading-none tracking-[-0.03em] text-white">
-              <span className="animate-name-first inline-block tracking-[-0.02em]">Ritz Lloyd</span>
-              <br />
-              <span className="animate-name-last inline-block text-[#3fffa8] tracking-[-0.04em]">
-                Sastrillas
+            <h1 className="font-syne font-bold text-2xl sm:text-3xl text-white flex items-center gap-2">
+              <TextType
+                text={name}
+                typingSpeed={50}
+                showCursor={false}
+                loop={false}
+                hideCursorOnComplete={true}
+              />
+              <span className="inline-flex items-center text-[#38BDF8]" title="Verified Developer">
+                <VerifiedBadgeIcon size={24} />
               </span>
             </h1>
 
-            {/* Positioning statement (replaces generic "Frontend Developer") */}
-            <p className="animate-subtitle font-syne font-semibold text-[clamp(1rem,2vw,1.35rem)] text-white/40 mt-4 mb-5 max-w-[560px]">
-              {positioning}
-            </p>
-
-            {/* Impact-first bio */}
-            <p className="animate-subtitle text-base leading-[1.75] text-white/45 max-w-[520px]">
-              {bio}
-            </p>
-
-            {/* "Currently thinking about" rotator */}
-            <div className="animate-subtitle mt-5">
-              <span className="text-[0.72rem] font-bold text-white/25 uppercase tracking-[0.1em]">
-                Currently thinking about
-              </span>
-              <div className="thinking-rotator mt-1.5 h-[1.6em] overflow-hidden relative">
-                {thinkingTopics.map((topic, i) => (
-                  <p
-                    key={i}
-                    className={`thinking-topic text-sm text-[#3fffa8]/70 font-medium italic transition-all duration-500 absolute w-full ${
-                      i === thinkingIndex
-                        ? "opacity-100 translate-y-0"
-                        : "opacity-0 translate-y-3"
-                    }`}
-                  >
-                    → {topic}
-                  </p>
-                ))}
-              </div>
-            </div>
-
-            {/* Mint divider */}
-            <div className="animate-buttons mt-8 mb-8 h-px w-24 bg-gradient-to-r from-[#3fffa8]/60 to-transparent shadow-[0_0_8px_rgba(63,255,168,0.3)]" />
-
-            {/* Buttons */}
-            <div className="animate-buttons flex flex-wrap gap-4">
-              <a
-                href="#projects"
-                className="shimmer-button relative inline-flex items-center gap-2 px-7 py-3 bg-[#3fffa8] text-[#050d1a] font-bold text-sm rounded-full tracking-tighter overflow-hidden group"
-              >
-                <span className="relative z-10">See the work →</span>
-              </a>
-              <a
-                href="#contact"
-                className="pulse-button inline-flex items-center gap-2 px-7 py-3 bg-transparent border border-white/15 text-white font-medium text-sm rounded-full transition-colors hover:border-[#3fffa8]/40 hover:text-[#3fffa8]"
-              >
-                Let&apos;s talk
-              </a>
+            {/* Social Links Bar */}
+            <div className="flex items-center gap-4 mt-3">
+              {github && (
+                <a
+                  href={github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/40 hover:text-white transition-colors duration-200"
+                  aria-label="GitHub"
+                >
+                  <GithubIcon size={20} />
+                </a>
+              )}
+              {linkedin && (
+                <a
+                  href={linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/40 hover:text-[#0A66C2] transition-colors duration-200"
+                  aria-label="LinkedIn"
+                >
+                  <LinkedinIcon size={20} />
+                </a>
+              )}
+              {email && (
+                <a
+                  href={`mailto:${email}`}
+                  className="text-white/40 hover:text-[#7DF9C2] transition-colors duration-200"
+                  aria-label="Email"
+                >
+                  <MailIcon size={20} />
+                </a>
+              )}
             </div>
           </div>
+        </motion.div>
 
-          {/* RIGHT — profile card */}
-          <div className="hidden md:block animate-profile-card" ref={profileCardRef}>
-            <div
-              className="profile-card glass bg-white/5 backdrop-blur-2xl p-8 min-w-[240px] text-center rounded-[20px] border border-[#3fffa8]/20 shadow-2xl relative overflow-hidden"
-              style={{ willChange: "transform" }}
-            >
-              {/* Ambient drift */}
-              <div className="card-ambient-shimmer absolute inset-0 pointer-events-none" />
+        {/* Headline / Role */}
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="font-sans font-bold text-2xl sm:text-3xl md:text-4xl text-white leading-snug tracking-tight mb-6"
+        >
+          Customer Service Representative | Technical Support Associate — <span className="text-white/50">IT Student &amp; Web Developer</span>
+        </motion.h2>
 
-              {/* Avatar */}
-              <div className="w-28 h-28 rounded-full bg-gradient-to-br from-[#A78BFA] to-[#60A5FA] mx-auto mb-5 flex items-center justify-center font-syne font-extrabold text-4xl text-white shadow-[0_0_40px_rgba(167,139,250,0.3)] relative overflow-hidden group">
-                {profileImage ? (
-                  <img
-                    src={profileImage}
-                    alt={name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                ) : (
-                  "RL"
-                )}
-              </div>
+        {/* Bio Paragraph with Embedded Inline Tech Chips (like renlenon.vercel.app) */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="text-base sm:text-lg text-white/60 leading-[1.8] max-w-3xl mb-8 font-normal"
+        >
+          I&apos;m a frontend developer building responsive web applications and performant user interfaces with{' '}
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded border border-[#61DAFB]/30 bg-[#61DAFB]/10 text-[#61DAFB] text-xs font-semibold align-middle mx-0.5">
+            <ReactIcon size={13} /> React
+          </span>{' '}
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded border border-white/20 bg-white/10 text-white text-xs font-semibold align-middle mx-0.5">
+            <NextjsIcon size={13} /> Next.js
+          </span>{' '}
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded border border-[#3178C6]/30 bg-[#3178C6]/10 text-[#60A5FA] text-xs font-semibold align-middle mx-0.5">
+            <TypescriptIcon size={13} /> TypeScript
+          </span>{' '}
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded border border-[#38BDF8]/30 bg-[#38BDF8]/10 text-[#38BDF8] text-xs font-semibold align-middle mx-0.5">
+            <TailwindIcon size={13} /> Tailwind CSS
+          </span>{' '}
+          and{' '}
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded border border-[#4169E1]/30 bg-[#4169E1]/10 text-[#A78BFA] text-xs font-semibold align-middle mx-0.5">
+            <PostgresIcon size={13} /> PostgreSQL
+          </span>{' '}
+          — focused on UI component architecture, accessibility, and high-conversion user experiences. Currently delivering production-ready applications and open to full-time &amp; freelance opportunities.
+        </motion.div>
 
-              <h3 className="font-syne font-bold text-base text-white mb-1.5">{name}</h3>
-              <p className="text-[0.75rem] font-bold text-[#3fffa8] uppercase tracking-[0.1em]">{role}</p>
+        {/* Primary Action Button — View Resume */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="flex flex-wrap items-center gap-4"
+        >
+          <a
+            href={resumeUrl || "/resume.pdf"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-white text-black font-bold text-sm rounded-lg hover:bg-white/90 transition-all duration-200 shadow-lg group"
+          >
+            <span>View Resume</span>
+            <span className="group-hover:translate-x-1 transition-transform">→</span>
+          </a>
 
-              {/* Stats — "Shipped Products" & "Full Stack" */}
-              <div className="flex justify-between items-center gap-6 mt-6 pt-6 border-t border-white/10">
-                <div className="flex-1">
-                  <div
-                    className={`font-extrabold text-2xl text-white transition-all duration-300 ${
-                      !counterDone ? "counter-mono" : "counter-display"
-                    }`}
-                  >
-                    {projectsCount}
-                  </div>
-                  <div className="text-[0.65rem] font-bold text-white/25 uppercase tracking-[0.08em] mt-0.5">
-                    Shipped Products
-                  </div>
-                </div>
+          <a
+            href="#projects"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-transparent border border-white/20 text-white font-medium text-sm rounded-lg hover:bg-white/5 transition-all duration-200"
+          >
+            See the work
+          </a>
+        </motion.div>
+      </div>
 
-                <div className="w-px h-8 bg-[#3fffa8]/30 shadow-[0_0_8px_rgba(63,255,168,0.6)]" />
-
-                <div className="flex-1">
-                  <div
-                    className={`font-extrabold text-2xl text-white transition-all duration-300 ${
-                      !counterDone ? "counter-mono" : "counter-display"
-                    }`}
-                  >
-                    {techCount}+
-                  </div>
-                  <div className="text-[0.65rem] font-bold text-white/25 uppercase tracking-[0.08em] mt-0.5">
-                    Full Stack
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
+      {/* Floating Bottom-Right Chat Widget (Chat with Ritz) */}
+      <div className="fixed bottom-6 right-6 z-50">
+        <a
+          href="#contact"
+          className="inline-flex items-center gap-2.5 px-4 py-2.5 bg-black/90 backdrop-blur-md border border-white/20 text-white font-medium text-xs rounded-full shadow-2xl hover:border-[#7DF9C2]/60 hover:text-[#7DF9C2] transition-all group"
+        >
+          <span className="w-2 h-2 rounded-full bg-[#7DF9C2] animate-pulse" />
+          <span>Chat with Ritz</span>
+        </a>
       </div>
     </section>
   );

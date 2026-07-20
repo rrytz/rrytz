@@ -16,22 +16,8 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Ritz Lloyd Sastrillas — Frontend Engineer",
-  description:
-    "I architect interfaces that scale — from 0 to production-ready. Portfolio of Ritz Lloyd Sastrillas.",
-  openGraph: {
-    title: "Ritz Lloyd Sastrillas — Frontend Engineer",
-    description:
-      "I architect interfaces that scale — from 0 to production-ready, across the full frontend stack.",
-    type: "website",
-    locale: "en_US",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Ritz Lloyd Sastrillas — Frontend Engineer",
-    description:
-      "I architect interfaces that scale — from 0 to production-ready.",
-  },
+  title: "Ritz Lloyd Sastrillas — Frontend Developer",
+  description: "Portfolio of Ritz Lloyd Sastrillas, a Frontend Developer crafting intuitive and visually engaging user interfaces.",
 };
 
 export default function RootLayout({

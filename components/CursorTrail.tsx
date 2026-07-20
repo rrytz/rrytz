@@ -29,6 +29,8 @@ export default function CursorTrail() {
   }, []);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     // Skip on touch devices or reduced motion
     const isTouch = window.matchMedia("(pointer: coarse)").matches;
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
