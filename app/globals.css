@@ -30,6 +30,29 @@
   --shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
 }
 
+.light {
+  --background: #FFFFFF;
+  --foreground: #09090B;
+  
+  --glass-1: rgba(0, 0, 0, 0.02);
+  --glass-2: rgba(0, 0, 0, 0.04);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --glass-border-bright: rgba(0, 0, 0, 0.12);
+  
+  --accent: #0D9488;
+  --accent2: #7C3AED;
+  --accent3: #2563EB;
+  
+  --text-primary: #09090B;
+  --text-muted: rgba(9, 9, 11, 0.6);
+  --text-dim: rgba(9, 9, 11, 0.35);
+  
+  --glow: rgba(13, 148, 136, 0.06);
+  --glow2: rgba(124, 58, 237, 0.04);
+  
+  --shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -74,4 +97,125 @@ body {
 
 .animate-pulse-dot {
   animation: pulse-dot 2s ease-in-out infinite;
+}
+
+/* Light Theme overrides */
+.light body {
+  background: var(--background);
+  color: var(--text-primary);
+}
+
+.light .text-white {
+  color: var(--text-primary) !important;
+}
+
+.light .text-white\/80 {
+  color: rgba(9, 9, 11, 0.8) !important;
+}
+
+.light .text-white\/60,
+.light .text-white\/55,
+.light .text-white\/50 {
+  color: var(--text-muted) !important;
+}
+
+.light .text-white\/45,
+.light .text-white\/40 {
+  color: var(--text-muted) !important;
+}
+
+.light .text-white\/25,
+.light .text-white\/20,
+.light .text-white\/10 {
+  color: var(--text-dim) !important;
+}
+
+.light .bg-white {
+  background-color: #09090B !important;
+  color: #FFFFFF !important;
+}
+
+.light .bg-white\/10 {
+  background-color: rgba(9, 9, 11, 0.05) !important;
+}
+
+.light .border-white\/10,
+.light .border-white\/20 {
+  border-color: var(--glass-border) !important;
+}
+
+.light .bg-transparent.border-white\/20 {
+  border-color: rgba(9, 9, 11, 0.15) !important;
+  color: var(--text-primary) !important;
+}
+
+.light .bg-transparent.border-white\/20:hover {
+  background-color: rgba(9, 9, 11, 0.04) !important;
+}
+
+.light .bg-black\/90 {
+  background-color: #FFFFFF !important;
+  color: #09090B !important;
+  border-color: rgba(9, 9, 11, 0.1) !important;
+}
+
+.light nav {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  border-color: rgba(9, 9, 11, 0.08) !important;
+}
+
+.light nav a {
+  color: rgba(9, 9, 11, 0.7) !important;
+}
+
+.light nav a:hover {
+  color: #0D9488 !important;
+}
+
+.light nav button {
+  border-color: rgba(9, 9, 11, 0.15) !important;
+  color: rgba(9, 9, 11, 0.6) !important;
+}
+
+.light nav button:hover {
+  color: #0D9488 !important;
+  border-color: #0D9488 !important;
+}
+
+.light .glass {
+  background: var(--glass-1) !important;
+  border-color: var(--glass-border) !important;
+}
+
+.light .glass:hover {
+  border-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+.light .text-\[\#7DF9C2\] {
+  color: #0D9488 !important;
+}
+
+.light .bg-\[\#7DF9C2\]\/10 {
+  background-color: rgba(13, 148, 136, 0.08) !important;
+}
+
+.light .border-\[\#7DF9C2\]\/20 {
+  border-color: rgba(13, 148, 136, 0.15) !important;
+}
+
+.light .text-amber-400\/70,
+.light .text-amber-400 {
+  color: #D97706 !important;
+}
+
+.light .bg-amber-400\/10 {
+  background-color: rgba(217, 119, 6, 0.08) !important;
+}
+
+.light .border-amber-400\/20 {
+  border-color: rgba(217, 119, 6, 0.15) !important;
+}
+
+.light .bg-gradient-to-br.from-\[\#7DF9C2\] {
+  background-image: linear-gradient(to bottom right, #0D9488, #3b82f6) !important;
 }

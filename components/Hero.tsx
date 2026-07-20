@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { portfolioData } from "@/data/portfolio";
 import PixelTransition from "./PixelTransition";
 import TextType from "./TextType";
+import AnimatedContent from "./AnimatedContent";
 import {
   GithubIcon,
   LinkedinIcon,
@@ -112,67 +113,58 @@ export default function Hero() {
           </div>
         </motion.div>
 
-        {/* Headline / Role */}
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="font-sans font-bold text-2xl sm:text-3xl md:text-4xl text-white leading-snug tracking-tight mb-6"
-        >
-          Customer Service Representative | Technical Support Associate — <span className="text-white/50">IT Student &amp; Web Developer</span>
-        </motion.h2>
+        {/* Headline / Role - Animated with AnimatedContent */}
+        <AnimatedContent distance={80} direction="vertical" delay={0.15}>
+          <h2 className="font-sans font-bold text-2xl sm:text-3xl md:text-4xl text-white leading-snug tracking-tight mb-6">
+            Customer Service Representative | Technical Support Associate — <span className="text-white/50">IT Student &amp; Web Developer</span>
+          </h2>
+        </AnimatedContent>
 
-        {/* Bio Paragraph with Embedded Inline Tech Chips (like renlenon.vercel.app) */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-base sm:text-lg text-white/60 leading-[1.8] max-w-3xl mb-8 font-normal"
-        >
-          I&apos;m a frontend developer building responsive web applications and performant user interfaces with{' '}
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded border border-[#61DAFB]/30 bg-[#61DAFB]/10 text-[#61DAFB] text-xs font-semibold align-middle mx-0.5">
-            <ReactIcon size={13} /> React
-          </span>{' '}
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded border border-white/20 bg-white/10 text-white text-xs font-semibold align-middle mx-0.5">
-            <NextjsIcon size={13} /> Next.js
-          </span>{' '}
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded border border-[#3178C6]/30 bg-[#3178C6]/10 text-[#60A5FA] text-xs font-semibold align-middle mx-0.5">
-            <TypescriptIcon size={13} /> TypeScript
-          </span>{' '}
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded border border-[#38BDF8]/30 bg-[#38BDF8]/10 text-[#38BDF8] text-xs font-semibold align-middle mx-0.5">
-            <TailwindIcon size={13} /> Tailwind CSS
-          </span>{' '}
-          and{' '}
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded border border-[#4169E1]/30 bg-[#4169E1]/10 text-[#A78BFA] text-xs font-semibold align-middle mx-0.5">
-            <PostgresIcon size={13} /> PostgreSQL
-          </span>{' '}
-          — focused on UI component architecture, accessibility, and high-conversion user experiences. Currently delivering production-ready applications and open to full-time &amp; freelance opportunities.
-        </motion.div>
+        {/* Bio Paragraph with Embedded Inline Tech Chips - Animated with AnimatedContent */}
+        <AnimatedContent distance={80} direction="vertical" delay={0.3}>
+          <div className="text-base sm:text-lg text-white/60 leading-[1.8] max-w-3xl mb-8 font-normal">
+            I&apos;m a frontend developer building responsive web applications and performant user interfaces with{' '}
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded border border-[#61DAFB]/30 bg-[#61DAFB]/10 text-[#61DAFB] text-xs font-semibold align-middle mx-0.5">
+              <ReactIcon size={13} /> React
+            </span>{' '}
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded border border-white/20 bg-white/10 text-white text-xs font-semibold align-middle mx-0.5">
+              <NextjsIcon size={13} /> Next.js
+            </span>{' '}
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded border border-[#3178C6]/30 bg-[#3178C6]/10 text-[#60A5FA] text-xs font-semibold align-middle mx-0.5">
+              <TypescriptIcon size={13} /> TypeScript
+            </span>{' '}
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded border border-[#38BDF8]/30 bg-[#38BDF8]/10 text-[#38BDF8] text-xs font-semibold align-middle mx-0.5">
+              <TailwindIcon size={13} /> Tailwind CSS
+            </span>{' '}
+            and{' '}
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded border border-[#4169E1]/30 bg-[#4169E1]/10 text-[#A78BFA] text-xs font-semibold align-middle mx-0.5">
+              <PostgresIcon size={13} /> PostgreSQL
+            </span>{' '}
+            — focused on UI component architecture, accessibility, and high-conversion user experiences. Currently delivering production-ready applications and open to full-time &amp; freelance opportunities.
+          </div>
+        </AnimatedContent>
 
-        {/* Primary Action Button — View Resume */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex flex-wrap items-center gap-4"
-        >
-          <a
-            href={resumeUrl || "/resume.pdf"}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-white text-black font-bold text-sm rounded-lg hover:bg-white/90 transition-all duration-200 shadow-lg group"
-          >
-            <span>View Resume</span>
-            <span className="group-hover:translate-x-1 transition-transform">→</span>
-          </a>
+        {/* Primary Action Button — View Resume - Animated with AnimatedContent */}
+        <AnimatedContent distance={80} direction="vertical" delay={0.45}>
+          <div className="flex flex-wrap items-center gap-4">
+            <a
+              href={resumeUrl || "/resume.pdf"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-white text-black font-bold text-sm rounded-lg hover:bg-white/90 transition-all duration-200 shadow-lg group"
+            >
+              <span>View Resume</span>
+              <span className="group-hover:translate-x-1 transition-transform">→</span>
+            </a>
 
-          <a
-            href="#projects"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-transparent border border-white/20 text-white font-medium text-sm rounded-lg hover:bg-white/5 transition-all duration-200"
-          >
-            See the work
-          </a>
-        </motion.div>
+            <a
+              href="#projects"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-transparent border border-white/20 text-white font-medium text-sm rounded-lg hover:bg-white/5 transition-all duration-200"
+            >
+              See the work
+            </a>
+          </div>
+        </AnimatedContent>
       </div>
 
       {/* Floating Bottom-Right Chat Widget (Chat with Ritz) */}
