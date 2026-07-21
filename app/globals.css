@@ -139,6 +139,15 @@ body {
   background-color: rgba(9, 9, 11, 0.05) !important;
 }
 
+.light .bg-white\/5 {
+  background-color: rgba(9, 9, 11, 0.03) !important;
+}
+
+.light .theme-blob {
+  opacity: 0.22 !important;
+  filter: blur(140px) !important;
+}
+
 .light .border-white\/10,
 .light .border-white\/20 {
   border-color: var(--glass-border) !important;

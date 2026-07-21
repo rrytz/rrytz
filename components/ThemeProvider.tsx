@@ -17,13 +17,16 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>('dark');
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [triggerTransition, setTriggerTransition] = useState(false);
+  const [transitionDirection, setTransitionDirection] = useState<'forward' | 'reverse'>('forward');
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('portfolio-theme') as Theme | null;
     const initialTheme = savedTheme || 'dark';
-    setTheme(initialTheme);
     if (initialTheme === 'light') {
       document.documentElement.classList.add('light');
+      setTimeout(() => {
+        setTheme('light');
+      }, 0);
     } else {
       document.documentElement.classList.remove('light');
     }
@@ -32,6 +35,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const toggleTheme = () => {
     if (isTransitioning) return;
     setIsTransitioning(true);
+    setTransitionDirection(theme === 'dark' ? 'forward' : 'reverse');
     setTriggerTransition(true);
   };
 
@@ -59,6 +63,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       {triggerTransition && (
         <ThemeTransitionOverlay
           active={triggerTransition}
+          direction={transitionDirection}
           onHalfway={handleHalfway}
           onComplete={handleComplete}
         />

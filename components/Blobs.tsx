@@ -15,7 +15,7 @@ export default function Blobs() {
           repeat: Infinity,
           ease: "linear",
         }}
-        className="absolute -top-24 -left-24 w-[500px] h-[500px] bg-[#7DF9C2]/15 rounded-full blur-[120px]"
+        className="absolute -top-24 -left-24 w-[500px] h-[500px] bg-[#7DF9C2]/15 rounded-full blur-[120px] theme-blob"
       />
       <motion.div
         animate={{
@@ -28,7 +28,7 @@ export default function Blobs() {
           ease: "linear",
           delay: 2,
         }}
-        className="absolute bottom-0 -right-20 w-[400px] h-[400px] bg-[#A78BFA]/15 rounded-full blur-[120px]"
+        className="absolute bottom-0 -right-20 w-[400px] h-[400px] bg-[#A78BFA]/15 rounded-full blur-[120px] theme-blob"
       />
       <motion.div
         animate={{
@@ -41,7 +41,7 @@ export default function Blobs() {
           ease: "linear",
           delay: 4,
         }}
-        className="absolute top-[40%] left-[55%] w-[300px] h-[300px] bg-[#60A5FA]/15 rounded-full blur-[120px]"
+        className="absolute top-[40%] left-[55%] w-[300px] h-[300px] bg-[#60A5FA]/15 rounded-full blur-[120px] theme-blob"
       />
     </div>
   );

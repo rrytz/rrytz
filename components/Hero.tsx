@@ -18,12 +18,13 @@ import {
 } from "./Icons";
 
 export default function Hero() {
-  const { name, role, profileImage, positioning, bio, resumeUrl, email } = portfolioData.personal;
+  const { name, profileImage, resumeUrl, email } = portfolioData.personal;
   const { github, linkedin } = portfolioData.social;
 
   return (
     <section id="home" className="min-h-screen flex items-center pt-32 sm:pt-36 pb-16">
       <div className="max-w-4xl mx-auto px-6 w-full">
+
         {/* Profile Header Row — Avatar + Name + Verified Badge + Social Icons */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -34,20 +35,9 @@ export default function Hero() {
           {/* Avatar with PixelTransition hover effect */}
           <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-[#A78BFA] to-[#60A5FA] flex-shrink-0 flex items-center justify-center font-syne font-extrabold text-2xl text-white shadow-[0_0_30px_rgba(125,249,194,0.15)] relative group overflow-hidden border-2 border-white/10">
             <PixelTransition
-              isVisible={true}
-              isHovered={false}
-              onClick={() => {}}
-              divRef={null}
-              contentContainerClassName="w-full h-full flex items-center justify-center"
-              pixelSize={8}
-              transitionDuration={0.4}
+              gridSize={8}
+              animationStepDuration={0.4}
               className="w-full h-full"
-              autoPlay={true}
-              playInterval={4000}
-              gridGap={2}
-              initialSpeed={0.8}
-              hoverSpeed={0.6}
-              pixelClassName="bg-gradient-to-br from-[#7DF9C2] to-[#60A5FA]"
               firstContent={
                 <img src="/avatar_hover.png" alt={`${name} Avatar`} className="w-full h-full object-cover" />
               }

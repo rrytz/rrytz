@@ -1,12 +1,12 @@
 'use client';
 
-import { useRef, useEffect, ReactNode, CSSProperties } from 'react';
+import { useRef, useEffect, ReactNode } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-interface AnimatedContentProps {
+interface AnimatedContentProps extends React.HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
   container?: string | HTMLElement | null;
   distance?: number;
@@ -24,9 +24,6 @@ interface AnimatedContentProps {
   disappearEase?: string;
   onComplete?: () => void;
   onDisappearanceComplete?: () => void;
-  className?: string;
-  style?: CSSProperties;
-  [key: string]: any;
 }
 
 const AnimatedContent = ({
@@ -57,7 +54,7 @@ const AnimatedContent = ({
     const el = ref.current;
     if (!el) return;
 
-    let scrollerTarget: any = container || document.getElementById('snap-main-container') || null;
+    let scrollerTarget: string | Element | null = container || document.getElementById('snap-main-container') || null;
 
     if (typeof scrollerTarget === 'string') {
       scrollerTarget = document.querySelector(scrollerTarget);

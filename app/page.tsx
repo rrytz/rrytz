@@ -13,7 +13,7 @@ import CursorTrail from "@/components/CursorTrail";
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen bg-[#080808] selection:bg-[#7DF9C2] selection:text-[#080808]">
+    <main className="relative min-h-screen bg-[var(--background)] transition-colors duration-500 selection:bg-[#7DF9C2] selection:text-[#080808]">
       <ScrollProgress />
       {/* Background Layers */}
       <NetworkCanvas />

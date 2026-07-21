@@ -44,10 +44,13 @@ export default function NetworkCanvas() {
         if (a.x < 0 || a.x > W) a.vx *= -1;
         if (a.y < 0 || a.y > H) a.vy *= -1;
 
+        // Check if light mode is active on document element
+        const isLight = document.documentElement.classList.contains("light");
+
         // Node dot
         ctx.beginPath();
         ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(125, 249, 194, 0.35)";
+        ctx.fillStyle = isLight ? "rgba(13, 148, 136, 0.15)" : "rgba(125, 249, 194, 0.35)";
         ctx.fill();
 
         for (let j = i + 1; j < nodes.length; j++) {
@@ -60,7 +63,9 @@ export default function NetworkCanvas() {
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = `rgba(125, 249, 194, ${alpha})`;
+            ctx.strokeStyle = isLight 
+              ? `rgba(13, 148, 136, ${alpha * 0.3})`
+              : `rgba(125, 249, 194, ${alpha})`;
             ctx.lineWidth = 0.6;
             ctx.stroke();
           }

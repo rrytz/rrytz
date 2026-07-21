@@ -1,6 +1,18 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, ReactNode, CSSProperties } from 'react';
 import { gsap } from 'gsap';
 import './PixelTransition.css';
+
+interface PixelTransitionProps {
+  firstContent: ReactNode;
+  secondContent: ReactNode;
+  gridSize?: number;
+  pixelColor?: string;
+  animationStepDuration?: number;
+  once?: boolean;
+  aspectRatio?: string;
+  className?: string;
+  style?: CSSProperties;
+}
 
 function PixelTransition({
   firstContent,
@@ -12,17 +24,21 @@ function PixelTransition({
   aspectRatio = '100%',
   className = '',
   style = {}
-}: any) {
+}: PixelTransitionProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const pixelGridRef = useRef<HTMLDivElement>(null);
   const activeRef = useRef<HTMLDivElement>(null);
-  const delayedCallRef = useRef<any>(null);
+  const delayedCallRef = useRef<ReturnType<typeof gsap.delayedCall> | null>(null);
 
   const [isActive, setIsActive] = useState(false);
 
-  const isTouchDevice =
-    typeof window !== 'undefined' &&
-    ('ontouchstart' in window || navigator.maxTouchPoints > 0 || window.matchMedia('(pointer: coarse)').matches);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  useEffect(() => {
+    setIsTouchDevice(
+      'ontouchstart' in window || navigator.maxTouchPoints > 0 || window.matchMedia('(pointer: coarse)').matches
+    );
+  }, []);
 
   useEffect(() => {
     const pixelGridEl = pixelGridRef.current;

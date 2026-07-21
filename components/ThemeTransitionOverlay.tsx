@@ -6,12 +6,14 @@ import './ThemeTransitionOverlay.css';
 
 interface ThemeTransitionOverlayProps {
   active: boolean;
+  direction?: 'forward' | 'reverse';
   onHalfway: () => void;
   onComplete: () => void;
 }
 
 export default function ThemeTransitionOverlay({
   active,
+  direction = 'forward',
   onHalfway,
   onComplete
 }: ThemeTransitionOverlayProps) {
@@ -25,9 +27,16 @@ export default function ThemeTransitionOverlay({
     const sweep = sweepRef.current;
     if (!container || !sweep) return;
 
+    const isForward = direction === 'forward';
+    const startX = isForward ? '-100vw' : '200vw';
+    const endX = isForward ? '200vw' : '-100vw';
+    const gradient = isForward
+      ? 'linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.15) 35%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0.15) 65%, transparent 100%)'
+      : 'linear-gradient(240deg, transparent 0%, rgba(255,255,255,0.15) 35%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0.15) 65%, transparent 100%)';
+
     // Reset overlay state
     gsap.set(container, { display: 'block', opacity: 1, pointerEvents: 'auto' });
-    gsap.set(sweep, { x: '-100vw' });
+    gsap.set(sweep, { x: startX, backgroundImage: gradient });
 
     const tl = gsap.timeline({
       onComplete: () => {
@@ -36,9 +45,9 @@ export default function ThemeTransitionOverlay({
       }
     });
 
-    // Sweep from left (-100vw) to right (200vw) across the screen
+    // Sweep across the screen
     tl.to(sweep, {
-      x: '200vw',
+      x: endX,
       duration: 1.0,
       ease: 'power2.inOut'
     }, 0);
@@ -51,7 +60,7 @@ export default function ThemeTransitionOverlay({
     return () => {
       tl.kill();
     };
-  }, [active, onHalfway, onComplete]);
+  }, [active, direction, onHalfway, onComplete]);
 
   return (
     <div ref={containerRef} className="theme-transition-overlay">
