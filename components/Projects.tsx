@@ -61,15 +61,28 @@ export default function Projects() {
                   {project.status}
                 </span>
 
-                {project.githubUrl && (
-                  <a 
-                    href={project.githubUrl} 
-                    target="_blank" 
-                    className="text-[0.8rem] text-white/25 hover:text-[#7DF9C2] transition-colors"
-                  >
-                    GitHub ↗
-                  </a>
-                )}
+                <div className="flex items-center gap-4">
+                  {project.githubUrl && (
+                    <a 
+                      href={project.githubUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-[0.8rem] text-white/25 hover:text-[#7DF9C2] transition-colors"
+                    >
+                      GitHub ↗
+                    </a>
+                  )}
+                  {(project as { liveUrl?: string }).liveUrl && (
+                    <a
+                      href={(project as { liveUrl?: string }).liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[0.8rem] text-white/25 hover:text-[#7DF9C2] transition-colors"
+                    >
+                      Live Demo ↗
+                    </a>
+                  )}
+                </div>
               </div>
             </motion.div>
           ))}

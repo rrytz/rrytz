@@ -64,6 +64,16 @@ export const portfolioData = {
       githubUrl: "https://github.com/rrytz/pace.git",
       projectRole: "Solo Developer",
     },
+    {
+      id: "04",
+      category: "PERSONAL PROJECT",
+      title: "MoneyMapPH – Personal Finance Tracker",
+      description: "Track spending, set budgets, and grow savings with a clean, user-focused interface — featuring income insights, emergency fund goals, and a financial health score.",
+      status: "Completed",
+      tech: ["Next.js", "Tailwind CSS", "Vercel"],
+      liveUrl: "https://money-map-ph.vercel.app/",
+      projectRole: "Solo Developer",
+    },
   ],
   education: [
     {
