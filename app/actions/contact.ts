@@ -1,6 +1,7 @@
 "use server";
 
 import { z } from "zod";
+import { getResend } from "@/lib/resend";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -35,12 +36,46 @@ export async function submitContactForm(
     };
   }
 
-  // TODO: Wire up your email provider here (Resend, EmailJS, Nodemailer, etc.)
-  // Example: await emails.send({ ... })
-  console.log("Contact form submission:", parsed.data);
+  const { name, email, subject, message } = parsed.data;
 
-  // Simulate network delay
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  try {
+    await getResend().emails.send({
+      from: "Portfolio <onboarding@resend.dev>",
+      to: ["ritzlloydsastrillas@gmail.com"],
+      subject: `[Portfolio] ${subject}`,
+      text: `
+New message from your portfolio contact form:
+
+Name: ${name}
+Email: ${email}
+Subject: ${subject}
+
+Message:
+${message}
+
+---
+Reply directly to: ${email}
+      `,
+      html: `
+        <h2>New message from your portfolio contact form</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Subject:</strong> ${subject}</p>
+        <hr />
+        <p><strong>Message:</strong></p>
+        <p style="white-space: pre-wrap; font-family: system-ui, sans-serif; line-height: 1.6;">${message}</p>
+        <hr />
+        <p style="color: #666; font-size: 0.9rem;">Reply directly to: <a href="mailto:${email}">${email}</a></p>
+      `,
+      replyTo: email,
+    });
+  } catch (error) {
+    console.error("Resend error:", error);
+    return {
+      status: "error",
+      message: "Failed to send message. Please try again or email me directly.",
+    };
+  }
 
   return {
     status: "success",
