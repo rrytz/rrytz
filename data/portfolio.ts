@@ -91,7 +91,7 @@ export const portfolioData = {
   ],
   experience: [
     {
-      period: "2021 — 2023",
+      period: "2023 — Present",
       title: "ICT – Information Communication Technology",
       description: "Senior High School ICT strand — foundations in computer literacy, technical drafting, and digital productivity tools that sparked my path into frontend development and IT support.",
     },
