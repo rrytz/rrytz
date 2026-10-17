@@ -91,6 +91,11 @@ export const portfolioData = {
   ],
   experience: [
     {
+      period: "2021 — 2023",
+      title: "ICT – Information Communication Technology",
+      description: "Senior High School ICT strand — foundations in computer literacy, technical drafting, and digital productivity tools that sparked my path into frontend development and IT support.",
+    },
+    {
       period: "2022 — Present",
       title: "Information Technology Student & Developer",
       description: "Hands-on academic experience in customer support principles, technical troubleshooting, frontend development (React, Next.js, Java, Python), database management (MySQL, PostgreSQL), and clear technical documentation.",
